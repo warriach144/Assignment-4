@@ -1,0 +1,19 @@
+name: wf-pr-validation
+on:
+  pull_request:
+    branches:
+      - develop
+jobs:
+  lint-build-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: repo checkout
+        uses: actions/checkout@v4
+      - name: Lint HTNL and CSS Rsc
+        run: |
+          npx htmlhint "**/*.html"
+          npx stylelint "**/*.css"
+      - name: Try Build
+        run: |
+          npx parcel build "./src/index.html" --dist-dir "./dev" --public-url "./"
+        
